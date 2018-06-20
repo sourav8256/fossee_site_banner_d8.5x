@@ -1,0 +1,79 @@
+fossee_site_banner.new-banner:
+  path: '/fossee-site-banner/new-banner'
+  defaults:
+    _controller: '\Drupal\fossee_site_banner\Controller\BannerController::content'
+    _title: 'New Bannner'
+  requirements:
+    _permission: 'access content'
+
+fossee_site_banner.edit-banner:
+  path: '/fossee-site-banner/edit-banner'
+  defaults:
+    _controller: '\Drupal\fossee_site_banner\Controller\BannerController::content'
+    _title: 'Edit Banner'
+  requirements:
+    _permission: 'access content'
+
+fossee_site_banner.banners:
+  path: '/fossee-site-banner/banners'
+  defaults:
+    _controller: '\Drupal\fossee_site_banner\Controller\Banners::banners'
+    _title: 'Banners'
+  requirements:
+    _permission: 'access content'
+
+fossee_site_banner.set-banner-active:
+  path: '/fossee-site-banner/set-banner-active/{id}'
+  defaults:
+    _controller: '\Drupal\fossee_site_banner\Controller\BannerController::setBannerActive'
+    _title: 'Hello World'
+  requirements:
+    _permission: 'access content'
+
+fossee_site_banner.set-banner-inactive:
+  path: '/fossee-site-banner/set-banner-inactive/{id}'
+  defaults:
+    _controller: '\Drupal\fossee_site_banner\Controller\BannerController::setBannerInactive'
+    _title: 'Hello World'
+  requirements:
+    _permission: 'access content'
+
+fossee_site_banner.delete-banner:
+  path: '/fossee-site-banner/delete-banner/{id}/{random}'
+  defaults:
+    _controller: '\Drupal\fossee_site_banner\Controller\BannerController::deleteBanner'
+    _title: 'Hello World'
+  requirements:
+    _permission: 'access content'
+
+fossee_site_banner.delete-website:
+  path: '/fossee-site-banner/set-banner-inactive/{id}'
+  defaults:
+    _controller: '\Drupal\fossee_site_banner\Controller\BannerController::setBannerInactive'
+    _title: 'Hello World'
+  requirements:
+    _permission: 'access content'
+
+fossee_site_banner.banner-settings:
+  path: '/fossee-site-banner/banner-settings/{arg_banner_id}'
+  defaults:
+    _form: '\Drupal\fossee_site_banner\Form\SiteBannerSettings'
+    _title: 'Banner Settings'
+  requirements:
+    _permission: 'access content'
+
+fossee_site_banner.add-website:
+  path: '/fossee-site-banner/add-website'
+  defaults:
+    _form: '\Drupal\fossee_site_banner\Form\FormAddWebsite'
+    _title: 'Add Website'
+  requirements:
+    _permission: 'access content'
+
+fossee_site_banner.module-settings:
+  path: '/admin/settings/fossee_site_banner'
+  defaults:
+    _form: '\Drupal\fossee_site_banner\Form\FormModuleSettings'
+    _title: 'Fossee Site Banner Settings'
+  requirements:
+    _permission: 'access content'

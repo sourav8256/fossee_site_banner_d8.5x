@@ -1,0 +1,13 @@
+banner-interface:
+  version: VERSION
+  js:
+    js/banner_interface.js: {}
+  dependencies:
+    - core/jquery
+
+main-js:
+  version: VERSION
+  js:
+    js/main.js: {}
+  dependencies:
+    - core/jquery

@@ -1,0 +1,6 @@
+fossee_site_banner.admin:
+  title: "Fossee Site Banner"
+  description: "Set or edit the variables used by the module"
+  parent: system.admin_config_development
+  route_name: fossee_site_banner.module-settings
+  weight: 100

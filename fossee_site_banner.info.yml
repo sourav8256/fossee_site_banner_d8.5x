@@ -1,0 +1,6 @@
+name: Fossee Site Banner
+description: Used to create and maintain banners across fossee websites.
+package: Custom
+type: module
+version: 1.0
+core: 8.x
