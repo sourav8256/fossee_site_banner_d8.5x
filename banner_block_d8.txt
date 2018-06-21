@@ -1,0 +1,107 @@
+<?php
+
+//$banner_folder = $path =  "http://".$_SERVER['SERVER_NAME'] . base_path() . 'sites/default/files/site_banners/';
+$site_name =trimDomain($_SERVER['SERVER_NAME'] . base_path());
+$default_db = "drupal8.";
+$res_banner_dir = \Drupal::database()->select($default_db.'fossee_site_banner_variables','n')
+          ->fields('n',array('value'))
+          ->range(0,1)
+          ->condition('n.name','banner_dir','=')
+          ->execute()
+          ->fetchCol();
+$banner_folder = $res_banner_dir[0];
+
+$website_index = \Drupal::database()->select($default_db.'fossee_website_index','n')
+          ->fields('n',array('site_code'))
+          ->range(0,1)
+          ->condition('n.site_name',$site_name,'=')
+          ->execute()
+          ->fetchCol();
+
+function getBannerFilesArray($default_db){
+
+   $result = \Drupal::database()->select($default_db.'fossee_banner_details','n')
+          ->fields('n',array('id','file_name','status','status_bool','timestamp','allowed_sites','banner_href'))
+          ->range(0,20)
+          //->condition('n.uid',$uid,'=')
+          ->execute();
+
+  return $result;
+
+}
+
+
+function trimDomain($input){
+$input = trim($input, '/');
+return $input;
+}
+
+
+
+// common part
+echo   '
+<link rel="stylesheet" type="text/css" href="https://fossee.in/data/banner/css/nice-bar.css" />     
+          <link rel="stylesheet" type="text/css" href="https://fossee.in/data/banner/css/lightbox.css" /> 
+     <script type="text/javascript" src="https://fossee.in/data/banner/js/nice-bar.js"></script>
+';
+
+// common part ends
+
+$results = getBannerFilesArray($default_db);
+
+$today = date("Y-m-d H:i:s");
+
+
+
+foreach ($results as $res) {
+  # code...
+
+  $json = $res->allowed_sites;
+  $allowed_sites = json_decode($json,true);
+  //$array_string = "";
+  if((date('Y-m-d H:i:s', $res->timestamp) >  $today) && isset( $allowed_sites[$website_index[0]] ) && $res->status_bool==1){
+
+  $array_string .= "\"".$res->file_name."\",";
+  $array_banner_href .= "\"".$res->banner_href."\",";
+  //echo '<a class="nice-text" href="'.$banner_folder.$res->file_name.'" target="_blank" >  <img src="'.$banner_folder.$res->file_name.'"> </a>'; 
+
+}
+
+}
+
+/* checking if array_string is empty so that empty/broken image is not displayed */
+if(!empty($array_string)){
+    echo '<a class="nice-text" id="banner_link" href="#" target="_blank" >  <img id="banner" src=""> </a>';
+}
+
+
+
+/* javascript to change the banner image after regular interval */
+
+echo "
+<script>
+var banner_holder = document.getElementById(\"banner\");
+var bannerLinkHolder = document.getElementById(\"banner_link\");
+var banners = [
+".$array_string."
+];
+
+var banner_hrefs = [
+".$array_banner_href."
+];
+
+console.log(banners);
+var i = 0;
+function change(){
+  if(i>=banners.length){i=0};
+    banner_holder.src= '".$banner_folder."/'+banners[i];
+    bannerLinkHolder.href = banner_hrefs[i];
+    i++;
+}
+
+change();
+setInterval(change,6000);
+
+</script>";
+
+?>
