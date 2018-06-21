@@ -1,7 +1,7 @@
 fossee_site_banner.new-banner:
   path: '/fossee-site-banner/new-banner'
   defaults:
-    _controller: '\Drupal\fossee_site_banner\Controller\BannerController::content'
+    _form: '\Drupal\fossee_site_banner\Form\FormNewBanner'
     _title: 'New Bannner'
   requirements:
     _permission: 'access content'

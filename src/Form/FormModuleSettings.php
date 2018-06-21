@@ -14,7 +14,7 @@ use Drupal\Component\Utility\UrlHelper;
 
 class FormModuleSettings extends FormBase{
 
-    private $default_db = "fossee_new";
+    private $default_db = "fossee_new.";
     private $banner_url;
 
     /**
@@ -88,18 +88,20 @@ class FormModuleSettings extends FormBase{
             '#default_value' => $banner_folder,
         );
 
-        $form['update_tables'] = array(
-            '#type' => 'submit',
-            '#value' => t('Update Tables'),
-            '#name' => t('update_tables'),
-            '#suffix' => t('<br><br>'),
-        );
 
         $form['submit'] = array(
             '#type' => 'submit',
             '#value' => 'Submit',
             '#name' => t('submit_button'),
         );
+
+        $form['form2']['update_tables'] = array(
+            '#type' => 'submit',
+            '#value' => t('Update Tables'),
+            '#name' => 'update_tables',
+            '#suffix' => t('<br><br>'),
+        );
+
 
         return $form;
     }
@@ -110,7 +112,7 @@ class FormModuleSettings extends FormBase{
      * {@inheritdoc}
      */
     public function validateForm(array &$form, FormStateInterface $form_state) {
-        $form_state->getValue('banner_dir');
+
     }
 
     /**
@@ -120,9 +122,10 @@ class FormModuleSettings extends FormBase{
 
         $triggeringElement = $form_state->getTriggeringElement();
 
-        if ($triggeringElement['#name'] === "update_tables") {
 
-            $schema = get_schema();
+        if ($triggeringElement['#name'] == "update_tables") {
+
+            $schema = $this->get_schema();
             //dpm($schema);
 
             if (!db_table_exists("fossee_banner_details")) {
@@ -160,7 +163,7 @@ class FormModuleSettings extends FormBase{
             \Drupal::state()->set('fossee_site_banner_banner_directory', $form_state->getValue('banner_dir'));
         }
 
-        $db_result = \Drupal::database()->select($this->default_db.".fossee_site_banner_variables", "n")
+        $db_result = \Drupal::database()->select($this->default_db."fossee_site_banner_variables", "n")
             ->fields('n')
             ->execute();
 
@@ -170,7 +173,7 @@ class FormModuleSettings extends FormBase{
 
         if ($rows >= 1) {
 
-            $db_update = \Drupal::database()->update($this->default_db .'.fossee_site_banner_variables')
+            $db_update = \Drupal::database()->update($this->default_db .'fossee_site_banner_variables')
                 ->fields(array(
                     'value' => $banner_url,
                 ))
@@ -178,7 +181,7 @@ class FormModuleSettings extends FormBase{
                 ->execute();
         } else {
 
-            $db_insert = \Drupal::database()->insert($this->default_db .'.fossee_site_banner_variables')
+            $db_insert = \Drupal::database()->insert($this->default_db .'fossee_site_banner_variables')
                 ->fields(array(
                     'name' => 'banner_dir',
                     'value' => $banner_url,
@@ -188,5 +191,131 @@ class FormModuleSettings extends FormBase{
 
         return;
     }
+
+
+    public function get_schema(){
+
+
+        /* creating banner_details table it contains details about the banner like banner name, banner file name,
+        time till which banner will be shown etc */
+        $schema['fossee_banner_details'] = array(
+            'description' => 'Table to store banner details',
+            'fields' => array(
+                'id' => array(
+                    'description' => 'Unique auto-incrementing id of the banner',
+                    'type' => 'serial',
+                    'not null' => TRUE,
+                ),
+                'file_name' => array(
+                    'description' => 'Name of the banner image file',
+                    'type' => 'text',
+                    'not null' => TRUE,
+                ),
+                'timestamp' => array(
+                    'description' => 'Time till which banner will be displayed',
+                    'type' => 'float',
+                    'size' => 'big',
+                    'not null' => FALSE,
+                ),
+                'last_updated' => array(
+                    'description' => 'TODO: please describe this field!',
+                    'type' => 'float',
+                    'size' => 'big',
+                    'not null' => TRUE,
+                ),
+                'created_timestamp' => array(
+                    'description' => 'TODO: please describe this field!',
+                    'type' => 'float',
+                    'size' => 'big',
+                    'not null' => TRUE,
+                ),
+                'status' => array(
+                    'description' => 'Shows the current status of the banner active/inactive as string',
+                    'type' => 'varchar',
+                    'length' => '20',
+                    'not null' => FALSE,
+                    'default' => 'inactive',
+                ),
+                'status_bool' => array(
+                    'description' => 'Shows the current status of the banner active/inactive as boolean',
+                    'type' => 'int',
+                    'size' => 'tiny',
+                    'not null' => FALSE,
+                    'default' => 0,
+                ),
+                'banner_name' => array(
+                    'description' => 'Stores the name of the banner',
+                    'type' => 'text',
+                    'not null' => TRUE,
+                ),
+                'banner_href' => array(
+                    'description' => 'Stores teh url where the banner will redirect to onclick',
+                    'type' => 'text',
+                    'not null' => TRUE,
+                ),
+                'allowed_sites' => array(
+                    'description' => 'stores the websites where the banner is allowed to be displayed as json!',
+                    'type' => 'text',
+                    'not null' => FALSE,
+                ),
+            ),
+            'primary key' => array('id'),
+        );
+
+
+
+        /* contains the list of probable websites where the banner will be shown */
+        $schema['fossee_website_index'] = array(
+            'description' => 'TODO: please describe this table!',
+            'fields' => array(
+                'site_code' => array(
+                    'description' => 'TODO: please describe this field!',
+                    'type' => 'serial',
+                    'not null' => TRUE,
+                ),
+                'site_name' => array(
+                    'description' => 'TODO: please describe this field!',
+                    'type' => 'varchar',
+                    'length' => '30',
+                    'not null' => TRUE,
+                ),
+            ),
+            'unique keys' => array(
+                'site_name' => array('site_name'),
+                'UNQ' => array('site_code')
+            ),
+        );
+
+        /**
+         * this table in fossee_new database contains variables which can be accessed by other websites
+         */
+        $schema['fossee_site_banner_variables'] = array(
+            'description' => 'TODO: please describe this table!',
+            'fields' => array(
+                'id' => array(
+                    'description' => 'TODO: please describe this field!',
+                    'type' => 'serial',
+                    'not null' => TRUE,
+                ),
+                'name' => array(
+                    'description' => 'TODO: please describe this field!',
+                    'type' => 'text',
+                    'not null' => TRUE,
+                ),
+                'value' => array(
+                    'description' => 'TODO: please describe this field!',
+                    'type' => 'text',
+                    'not null' => TRUE,
+                ),
+            ),
+            'primary key' => array('id'),
+        );
+
+
+
+        return $schema;
+    }
+
+
 
 }

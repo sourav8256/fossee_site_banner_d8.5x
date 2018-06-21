@@ -6,10 +6,11 @@
 namespace Drupal\fossee_site_banner\Controller;
 
 use Drupal\Core\Controller\ControllerBase;
+use Symfony\Component\HttpFoundation\JsonResponse;
 
 class BannerController extends ControllerBase{
 
-    public $default_db = "fossee_new";
+    public $default_db = "fossee_new.";
 
     public function content() {
         return array(
@@ -30,7 +31,7 @@ class BannerController extends ControllerBase{
 
     public function setBannerActive($id){
 
-        $num_updated = \Drupal::database()->update($this->default_db.'.fossee_banner_details')
+        $num_updated = \Drupal::database()->update($this->default_db.'fossee_banner_details')
             ->fields(array(
                 'status' => 'active',
                 'status_bool' => 1,
@@ -53,7 +54,7 @@ class BannerController extends ControllerBase{
     }
 
     public function setBannerInactive($id){
-        $num_updated = \Drupal::database()->update($this->default_db.'.fossee_banner_details')
+        $num_updated = \Drupal::database()->update($this->default_db.'fossee_banner_details')
             ->fields(array(
                 'status' => 'inactive',
                 'status_bool' => 0,
@@ -80,7 +81,7 @@ class BannerController extends ControllerBase{
         $op_result = TRUE;
 
         /* fetching the filename of the banner file */
-        $file_name = db_select('fossee_banner_details','n')
+        $file_name = \Drupal::database()->select($this->default_db.'fossee_banner_details','n')
             ->fields('n',array('file_name'))
             ->range(0,1)
             ->condition('n.id',$id,'=')
@@ -89,7 +90,7 @@ class BannerController extends ControllerBase{
 
 
         /* deleting database entry in fossee_banner_details table */
-        $delete_row = \Drupal::database()->delete('fossee_banner_details')
+        $delete_row = \Drupal::database()->delete($this->default_db.'fossee_banner_details')
             ->condition('id', $id, '=')
             ->execute();
 
@@ -100,7 +101,7 @@ class BannerController extends ControllerBase{
         }
 
         /* checking if file was deleted*/
-        if(!file_unmanaged_delete(variable_get('fossee_site_banner_banner_directory', "not found")."/".$file_name[0])){
+        if(!file_unmanaged_delete(\Drupal::state()->get('fossee_site_banner_banner_directory', "not found")."/".$file_name[0])){
             $op_result = FALSE;
         }
 
@@ -112,8 +113,10 @@ class BannerController extends ControllerBase{
         }
 
 
-        drupal_json_output(array('status' => 0, 'data' => $id, 'result' => $result));
+        //return $this->redirect("fossee_site_banner.banners");
+        //drupal_json_output(array('status' => 0, 'data' => $id, 'result' => $result));
 
+        return new JsonResponse(array('status' => 0, 'data' => $id, 'result' => $result));
     }
 }
 

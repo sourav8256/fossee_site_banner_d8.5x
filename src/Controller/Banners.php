@@ -8,11 +8,11 @@ class Banners {
 
 
     private $banner_url;
-    private $default_db = "fossee_new";
+    private $default_db = "fossee_new.";
 
     public function banners(){
 
-        $res_banner_dir = \Drupal::database()->select($this->default_db.'.fossee_site_banner_variables','n')
+        $res_banner_dir = \Drupal::database()->select($this->default_db.'fossee_site_banner_variables','n')
             ->fields('n',array('value'))
             ->range(0,1)
             ->condition('n.name','banner_dir','=')
@@ -23,21 +23,21 @@ class Banners {
 
         $recent_time = 1*24*60*60; // D * H * MIN * SEC
 
-        $result_recent = \Drupal::database()->select($this->default_db.'.fossee_banner_details','n');
+        $result_recent = \Drupal::database()->select($this->default_db.'fossee_banner_details','n');
         $result_recent->fields('n',['id','file_name','status']);
         //->range(0,20)
         //->condition(db_or()->condition('n.created_timestamp',time()-$recent_time,'>')->condition('n.last_updated',time()-$recent_time))
         $result_recent->condition('n.last_updated',time()-$recent_time,">");
         $result_recent = $result_recent->execute()->fetchAllAssoc('file_name'); // returns the banners from the fossee_banner_details table
 
-        $result_active = \Drupal::database()->select($this->default_db.'.fossee_banner_details','n');
+        $result_active = \Drupal::database()->select($this->default_db.'fossee_banner_details','n');
         $result_active->fields('n',['id','file_name','status']);
         //->range(0,20)
         //->condition(db_or()->condition('n.created_timestamp',time()-$recent_time,'>')->condition('n.last_updated',time()-$recent_time))
         $result_active->condition('n.status_bool',TRUE,"=");
         $result_active = $result_active->execute()->fetchAllAssoc('file_name'); // returns the banners from the fossee_banner_details table
 
-        $result_inactive = \Drupal::database()->select($this->default_db.'.fossee_banner_details','n');
+        $result_inactive = \Drupal::database()->select($this->default_db.'fossee_banner_details','n');
         $result_inactive->fields('n',['id','file_name','status']);
         //->range(0,20)
         //->condition(db_or()->condition('n.created_timestamp',time()-$recent_time,'>')->condition('n.last_updated',time()-$recent_time))
@@ -237,7 +237,7 @@ class Banners {
     function getFilesArray(){
         $result = db_select('fossee_banner_details','n')
             ->fields('n',array('id','file_name','status'))
-            ->range(0,20)
+            //->range(0,20)
             //->condition('n.status_bool',1,'=')
             ->execute();
 

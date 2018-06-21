@@ -7,26 +7,31 @@ function deleteBanner(id) {
     var txt;
     if (confirm("Banner Once Deleted Is Not Recoverable, do you still want to delete it permanently?")) {
         txt = "You pressed OK!";
-        $.get(baseUrl+"fossee-site-banner/delete-banner/"+id+'/arg'+Math.random()).success(function(data){
+        //alert("ok");
+        //alert("url is "+baseUrl+"fossee-site-banner/delete-banner/"+id+'/arg'+Math.random());
 
-            console.log("result is "+data.result);
+        jQuery.ajax({url: baseUrl+"fossee-site-banner/delete-banner/"+id+'/arg'+Math.random(), success: function(result){
 
-            if(data.result === 'success'){
-                window.location = baseUrl+"fossee-site-banner/banners";
-                console.log("result success");
-            }
 
-            return false;
+                console.log("result is "+result.result);
 
-        });
+                if(result.result === 'success'){
+                    window.location = baseUrl+"fossee-site-banner/banners";
+                    console.log("result success");
+                }
+
+                return false;
+
+            }});
+
 
     } else {
         txt = "You pressed Cancel!";
     }
 
     return false;
-}
 
+}
 
 /*
 (function($) {

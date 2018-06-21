@@ -14,7 +14,7 @@ use Drupal\Component\Utility\UrlHelper;
 
 class SiteBannerSettings extends FormBase{
 
-    private $default_db = "fossee_new";
+    private $default_db = "fossee_new.";
     private $banner_url;
 
     /**
@@ -29,7 +29,7 @@ class SiteBannerSettings extends FormBase{
      */
     public function buildForm(array $form, FormStateInterface $form_state,$arg_banner_id = NULL) {
 
-        $res_banner_dir = \Drupal::database()->select($this->default_db.'.fossee_site_banner_variables','n')
+        $res_banner_dir = \Drupal::database()->select($this->default_db.'fossee_site_banner_variables','n')
             ->fields('n',array('value'))
             ->range(0,1)
             ->condition('n.name','banner_dir','=')
@@ -52,14 +52,14 @@ class SiteBannerSettings extends FormBase{
 
         /* getting the list of allowed sites saved as json */
 
-        $allowed_site_json = \Drupal::database()->select($this->default_db.'.fossee_banner_details','n')
+        $allowed_site_json = \Drupal::database()->select($this->default_db.'fossee_banner_details','n')
             ->fields('n',array('allowed_sites'))
             ->range(0,1)
             ->condition('n.id',$arg_banner_id,'=')
             ->execute()
             ->fetchCol(); // fetches first column of teh result
 
-        $banner_filename = \Drupal::database()->select($this->default_db.'.fossee_banner_details','n') // for fetching the banner filename
+        $banner_filename = \Drupal::database()->select($this->default_db.'fossee_banner_details','n') // for fetching the banner filename
         ->fields('n',array('file_name'))
             ->range(0,1)
             ->condition('n.id',$arg_banner_id,'=')
@@ -113,8 +113,9 @@ class SiteBannerSettings extends FormBase{
 
         $form['delete'] = array(
             '#type' => "inline_template",
-            '#template' => "<button onclick='deleteBanner(".$arg_banner_id."); return false;' >Delete Banner</button>&nbsp;&nbsp;",
+            '#template' => "<input type='button' onclick='deleteBanner(".$arg_banner_id."); return false;' value='Delete Banner' />&nbsp;&nbsp;",
         );
+
 
         $form['back'] = array(
             '#type' => "inline_template",
@@ -132,7 +133,7 @@ class SiteBannerSettings extends FormBase{
  */
 
     function getSitesList(){
-        $result = \Drupal::database()->select($this->default_db.'.fossee_website_index','n')
+        $result = \Drupal::database()->select($this->default_db.'fossee_website_index','n')
             ->fields('n',array('site_code','site_name'))
             ->range(0,50)
             //->condition('n.uid',$uid,'=')
@@ -163,7 +164,7 @@ class SiteBannerSettings extends FormBase{
         $allowed_site_json = json_encode(array_filter($form_state->getValue('sites'))); // converts array into json
 
 
-        $num_updated = \Drupal::database()->update($this->default_db.'.fossee_banner_details')
+        $num_updated = \Drupal::database()->update($this->default_db.'fossee_banner_details')
             ->fields(array(
                 'allowed_sites' => $allowed_site_json, // field in fossee_banner_details table containing list of allowed sites as json string
             ))

@@ -14,7 +14,7 @@ use Drupal\Component\Utility\UrlHelper;
 
 class FormAddWebsite extends FormBase{
 
-    private $default_db = "fossee_new";
+    private $default_db = "fossee_new.";
 
     /**
      * {@inheritdoc}
@@ -136,7 +136,7 @@ class FormAddWebsite extends FormBase{
 
                 } else {
 
-                    form_set_error("id".$i,"Please Give A Valid Domain Name ! ".$site_name." is invalid");
+                    $form_state->setErrorByName("id".$i,"Please Give A Valid Domain Name ! ".$site_name." is invalid");
                 }
 
             }
@@ -169,7 +169,7 @@ class FormAddWebsite extends FormBase{
 
 
             try {
-                $db_insert = \Drupal::database()->insert($this->default_db.'.fossee_website_index')
+                $db_insert = \Drupal::database()->insert($this->default_db.'fossee_website_index')
                     ->fields(array(
                         'site_name' => $domain,
                     ))
@@ -213,7 +213,7 @@ class FormAddWebsite extends FormBase{
 
     function generateWebsitesTable(){
         $base_url = "http://".$_SERVER['SERVER_NAME'] . base_path();
-        $banners = \Drupal::database()->select($this->default_db.'.fossee_website_index','n') // for fetching the banner filename
+        $banners = \Drupal::database()->select($this->default_db.'fossee_website_index','n') // for fetching the banner filename
         ->fields('n',array('site_name','site_code'))
             ->execute();
 
