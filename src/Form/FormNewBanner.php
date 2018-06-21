@@ -14,7 +14,8 @@ use Drupal\Component\Utility\UrlHelper;
 
 class FormNewBanner extends FormBase{
 
-    private $default_db = "fossee_new.";
+    //private $default_db = "fossee_new.";
+    public $default_db = "";
     private $banner_url;
 
     /**
@@ -28,6 +29,8 @@ class FormNewBanner extends FormBase{
      * {@inheritdoc}
      */
     public function buildForm(array $form, FormStateInterface $form_state) {
+
+        //$this->sendMail("banner_name");
 
         //module_load_include('inc','fossee_site_banner','inc/db_schema');
 
@@ -124,6 +127,7 @@ class FormNewBanner extends FormBase{
      */
     public function submitForm(array &$form, FormStateInterface $form_state){
 
+
         //module_load_include('inc','fossee_site_banner','inc/mail');
         global $user;
 
@@ -185,9 +189,7 @@ class FormNewBanner extends FormBase{
                 drupal_set_message('Banner Name : ' . $banner_name);
                 drupal_set_message('End Date : ' . date('Y-m-d H:i:s', $end_date));
 
-                $params['banner_name'] = $banner_name;
-                $params['to'] = \Drupal::state()->get('fossee_site_banner_banner_admin',NULL);
-                //drupal_mail('fossee_site_banner','banner_created',$user->mail,language_default(),$params);
+                $this->sendMail($banner_name);
 
                 return $this->redirect("fossee_site_banner.banners");
 
@@ -206,6 +208,18 @@ class FormNewBanner extends FormBase{
         $extension = pathinfo($filename,PATHINFO_EXTENSION);
         $new_filename = $filename."_".$timestamp.".".$extension;
         return $new_filename;
+    }
+
+    public function sendMail(){
+        $key = "banner_created";
+        $langcode = \Drupal::currentUser()->getPreferredLangcode();
+        $to = \Drupal::state()->get("fossee_site_banner_banner_admin");
+        $params['banner_name'] = "banner name";
+        $params['to'] = \Drupal::state()->get('fossee_site_banner_banner_admin',NULL);
+        //drupal_mail('fossee_site_banner','banner_created',$user->mail,language_default(),$params);
+        $mailManager = \Drupal::service('plugin.manager.mail');
+        $mailManager->mail("fossee_site_banner", $key, $to, $langcode, $params, NULL, TRUE);
+
     }
 
 

@@ -10,7 +10,8 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 
 class BannerController extends ControllerBase{
 
-    public $default_db = "fossee_new.";
+    //public $default_db = "fossee_new.";
+    public $default_db = "";
 
     public function content() {
         return array(

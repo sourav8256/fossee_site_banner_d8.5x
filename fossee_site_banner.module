@@ -1,0 +1,53 @@
+<?php
+
+
+function fossee_site_banner_mail($key, &$message, $params)
+{
+
+    global $user;
+    switch($key)
+    {
+        case 'banner_created':
+            $message['to'] = $params['to'];
+            $message['bcc'] = 'site_admin_mail_goes_here';
+            $message['subject'] = t('New Banner is Created');
+            $message['body'][] = t('Hello,');
+            $message['body'][] = t('New banner "'.$params['banner_name'].'" has been created at fossee.in.');
+            break;
+
+        case 'banner_validity_reminder':
+            $message['to'] = $params['to'];
+            $message['bcc'] = 'site_admin_mail_goes_here';
+            $message['subject'] = t('Warning some of the banners are about to expire.');
+            $message['body'][] = t('Hello,');
+            $message['body'][] = t('The banner <html>'.$params['banners'].'</html> is valid only for 7 or less number of days please take necessary action.');
+            break;
+    }
+}
+
+
+
+function fossee_site_banner_cron(){
+
+    $domain_name = "http://".$_SERVER['SERVER_NAME'] . base_path();
+
+    $time_range = 70*24*60*60;
+    $result = \Drupal::database()->select('fossee_banner_details','n')
+        ->fields('n',array('id','file_name','status','banner_name'))
+        //->range(0,20)
+        //->condition(db_or()->condition('n.created_timestamp',time()-$recent_time,'>')->condition('n.last_updated',time()-$recent_time))
+        ->condition('n.timestamp',time()+$time_range,"<")
+        ->execute(); // returns the banners from the fossee_banner_details table
+
+    foreach ($result as $res){
+        $banner_link = $domain_name."fossee-site-banner/banner-settings/".$res->id;
+        $params['banners'] .= t('<br><a href="'.$banner_link.'">'.$res->banner_name.'</a>');
+    }
+
+    $params['to'] = \Drupal::state()->get('fossee_site_banner_banner_admin',NULL);
+
+    $mailManager = \Drupal::service('plugin.manager.mail');
+    $mailManager->mail('fossee_site_banner','banner_validity_reminder',$params['to'],language_default(),$params, NULL, TRUE);
+
+}
+

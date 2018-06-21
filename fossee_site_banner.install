@@ -1,0 +1,135 @@
+<?php
+/**
+ * Created by PhpStorm.
+ * User: root
+ * Date: 21/6/18
+ * Time: 10:35 PM
+ */
+
+
+/**
+ *Implementation hook_schema
+ */
+
+function fossee_site_banner_schema(){
+
+
+    /* creating banner_details table it contains details about the banner like banner name, banner file name,
+    time till which banner will be shown etc */
+    $schema['fossee_banner_details'] = array(
+        'description' => 'Table to store banner details',
+        'fields' => array(
+            'id' => array(
+                'description' => 'Unique auto-incrementing id of the banner',
+                'type' => 'serial',
+                'not null' => TRUE,
+            ),
+            'file_name' => array(
+                'description' => 'Name of the banner image file',
+                'type' => 'text',
+                'not null' => TRUE,
+            ),
+            'timestamp' => array(
+                'description' => 'Time till which banner will be displayed',
+                'type' => 'float',
+                'size' => 'big',
+                'not null' => FALSE,
+            ),
+            'last_updated' => array(
+                'description' => 'TODO: please describe this field!',
+                'type' => 'float',
+                'size' => 'big',
+                'not null' => TRUE,
+            ),
+            'created_timestamp' => array(
+                'description' => 'TODO: please describe this field!',
+                'type' => 'float',
+                'size' => 'big',
+                'not null' => TRUE,
+            ),
+            'status' => array(
+                'description' => 'Shows the current status of the banner active/inactive as string',
+                'type' => 'varchar',
+                'length' => '20',
+                'not null' => FALSE,
+                'default' => 'inactive',
+            ),
+            'status_bool' => array(
+                'description' => 'Shows the current status of the banner active/inactive as boolean',
+                'type' => 'int',
+                'size' => 'tiny',
+                'not null' => FALSE,
+                'default' => 0,
+            ),
+            'banner_name' => array(
+                'description' => 'Stores the name of the banner',
+                'type' => 'text',
+                'not null' => TRUE,
+            ),
+            'banner_href' => array(
+                'description' => 'Stores teh url where the banner will redirect to onclick',
+                'type' => 'text',
+                'not null' => TRUE,
+            ),
+            'allowed_sites' => array(
+                'description' => 'stores the websites where the banner is allowed to be displayed as json!',
+                'type' => 'text',
+                'not null' => FALSE,
+            ),
+        ),
+        'primary key' => array('id'),
+    );
+
+
+
+    /* contains the list of probable websites where the banner will be shown */
+    $schema['fossee_website_index'] = array(
+        'description' => 'TODO: please describe this table!',
+        'fields' => array(
+            'site_code' => array(
+                'description' => 'TODO: please describe this field!',
+                'type' => 'serial',
+                'not null' => TRUE,
+            ),
+            'site_name' => array(
+                'description' => 'TODO: please describe this field!',
+                'type' => 'varchar',
+                'length' => '30',
+                'not null' => TRUE,
+            ),
+        ),
+        'unique keys' => array(
+            'site_name' => array('site_name'),
+            'UNQ' => array('site_code')
+        ),
+    );
+
+    /**
+     * this table in fossee_new database contains variables which can be accessed by other websites
+     */
+    $schema['fossee_site_banner_variables'] = array(
+        'description' => 'TODO: please describe this table!',
+        'fields' => array(
+            'id' => array(
+                'description' => 'TODO: please describe this field!',
+                'type' => 'serial',
+                'not null' => TRUE,
+            ),
+            'name' => array(
+                'description' => 'TODO: please describe this field!',
+                'type' => 'text',
+                'not null' => TRUE,
+            ),
+            'value' => array(
+                'description' => 'TODO: please describe this field!',
+                'type' => 'text',
+                'not null' => TRUE,
+            ),
+        ),
+        'primary key' => array('id'),
+    );
+
+
+
+    return $schema;
+}

@@ -7,9 +7,9 @@ fossee_site_banner.new-banner:
     _permission: 'access content'
 
 fossee_site_banner.edit-banner:
-  path: '/fossee-site-banner/edit-banner'
+  path: '/fossee-site-banner/edit-banner/{arg_id}'
   defaults:
-    _controller: '\Drupal\fossee_site_banner\Controller\BannerController::content'
+    _form: '\Drupal\fossee_site_banner\Form\FormEditBanner'
     _title: 'Edit Banner'
   requirements:
     _permission: 'access content'

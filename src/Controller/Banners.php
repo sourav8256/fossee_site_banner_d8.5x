@@ -8,7 +8,8 @@ class Banners {
 
 
     private $banner_url;
-    private $default_db = "fossee_new.";
+    //private $default_db = "fossee_new.";
+    private $default_db = "";
 
     public function banners(){
 
@@ -192,7 +193,7 @@ class Banners {
 
         }
 
-        return $output;
+        //return $output;
 
     }
 

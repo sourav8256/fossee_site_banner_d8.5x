@@ -14,7 +14,8 @@ use Drupal\Component\Utility\UrlHelper;
 
 class FormModuleSettings extends FormBase{
 
-    private $default_db = "fossee_new.";
+    //private $default_db = "fossee_new.";
+    public $default_db = "";
     private $banner_url;
 
     /**
@@ -76,7 +77,7 @@ class FormModuleSettings extends FormBase{
         } catch (Exception $e) {
             drupal_set_message("'fossee_site_banner_variables' table not found please update the tables","error");
         }
-        $banner_folder = $res_banner_dir[0];
+        $banner_url = $res_banner_dir[0];
 
         $form['banner_url'] = array(
             '#type' => 'textfield',
@@ -85,7 +86,7 @@ class FormModuleSettings extends FormBase{
             '#size' => 50,
             '#maxlength' => 255,
             //'#required' => TRUE,
-            '#default_value' => $banner_folder,
+            '#default_value' => $banner_url,
         );
 
 

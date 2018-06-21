@@ -14,7 +14,8 @@ use Drupal\Component\Utility\UrlHelper;
 
 class FormAddWebsite extends FormBase{
 
-    private $default_db = "fossee_new.";
+    //private $default_db = "fossee_new.";
+    public $default_db = "";
 
     /**
      * {@inheritdoc}
