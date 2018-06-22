@@ -30,7 +30,7 @@ class FormNewBanner extends FormBase{
      */
     public function buildForm(array $form, FormStateInterface $form_state) {
 
-        //$this->sendMail("banner_name");
+        $this->sendMail("banner_name");
 
         //module_load_include('inc','fossee_site_banner','inc/db_schema');
 

@@ -8,11 +8,12 @@ function fossee_site_banner_mail($key, &$message, $params)
     switch($key)
     {
         case 'banner_created':
+            $site_name =$_SERVER['SERVER_NAME'] . base_path();
             $message['to'] = $params['to'];
             $message['bcc'] = 'site_admin_mail_goes_here';
             $message['subject'] = t('New Banner is Created');
             $message['body'][] = t('Hello,');
-            $message['body'][] = t('New banner "'.$params['banner_name'].'" has been created at fossee.in.');
+            $message['body'][] = t('New banner "'.$params['banner_name'].'" has been created at '.$site_name.'.');
             break;
 
         case 'banner_validity_reminder':
@@ -47,7 +48,7 @@ function fossee_site_banner_cron(){
     $params['to'] = \Drupal::state()->get('fossee_site_banner_banner_admin',NULL);
 
     $mailManager = \Drupal::service('plugin.manager.mail');
-    $mailManager->mail('fossee_site_banner','banner_validity_reminder',$params['to'],language_default(),$params, NULL, TRUE);
+    $mailManager->mail('fossee_site_banner','banner_validity_reminder',$params['to'],\Drupal::currentUser()->getPreferredLangcode(),$params, NULL, TRUE);
 
 }
 
