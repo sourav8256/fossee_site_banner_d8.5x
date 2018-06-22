@@ -113,13 +113,20 @@ class Banners {
 
             unset($col); // col array contains the html code for displaing the banner images
 
-            $col[0] = " ";
-            $col[1] = " ";
-            $col[2] = " ";
+            $empty_placeholder = "
+                        <div style = \"margin-left:auto;margin-right:auto;height : 170px; width : 200px;\">
+			            </div>
+                     "; // if there is no image this element of col is left empty
+
+            $col[0] = $empty_placeholder;
+            $col[1] = $empty_placeholder;
+            $col[2] = $empty_placeholder;
 
             for($k=0;$k<sizeof($banners[$j]);$k++){ // loops through columns of $j row of the banners array
                 unset($banner);
                 $banner = $banners[$j][$k];
+
+                dpm("banner id is ".($banner->id == NULL));
 
                 if($banners[$j]!=NULL){ // necessary for rows which contains less than 3 banners
                     if($banner->status == 'active'){

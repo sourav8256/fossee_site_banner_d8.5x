@@ -30,7 +30,7 @@ class FormNewBanner extends FormBase{
      */
     public function buildForm(array $form, FormStateInterface $form_state) {
 
-        $this->sendMail("banner_name");
+        //$this->sendMail("banner_name");
 
         //module_load_include('inc','fossee_site_banner','inc/db_schema');
 
@@ -210,11 +210,11 @@ class FormNewBanner extends FormBase{
         return $new_filename;
     }
 
-    public function sendMail(){
+    public function sendMail($banner_name){
         $key = "banner_created";
         $langcode = \Drupal::currentUser()->getPreferredLangcode();
         $to = \Drupal::state()->get("fossee_site_banner_banner_admin");
-        $params['banner_name'] = "banner name";
+        $params['banner_name'] = $banner_name;
         $params['to'] = \Drupal::state()->get('fossee_site_banner_banner_admin',NULL);
         //drupal_mail('fossee_site_banner','banner_created',$user->mail,language_default(),$params);
         $mailManager = \Drupal::service('plugin.manager.mail');
