@@ -191,7 +191,7 @@ class FormNewBanner extends FormBase{
 
                 $this->sendMail($banner_name);
 
-                return $this->redirect("fossee_site_banner.banners");
+                $form_state->setRedirect('fossee_site_banner.banners');
 
             } else {
                 drupal_set_message("Sorry Banner Is Not Created For Some Reason!");

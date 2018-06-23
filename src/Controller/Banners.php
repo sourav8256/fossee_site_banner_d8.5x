@@ -126,7 +126,6 @@ class Banners {
                 unset($banner);
                 $banner = $banners[$j][$k];
 
-                dpm("banner id is ".($banner->id == NULL));
 
                 if($banners[$j]!=NULL){ // necessary for rows which contains less than 3 banners
                     if($banner->status == 'active'){

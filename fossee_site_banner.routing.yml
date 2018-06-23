@@ -4,7 +4,7 @@ fossee_site_banner.new-banner:
     _form: '\Drupal\fossee_site_banner\Form\FormNewBanner'
     _title: 'New Bannner'
   requirements:
-    _permission: 'access content'
+    _permission: 'create new_banner'
 
 fossee_site_banner.edit-banner:
   path: '/fossee-site-banner/edit-banner/{arg_id}'
@@ -12,7 +12,7 @@ fossee_site_banner.edit-banner:
     _form: '\Drupal\fossee_site_banner\Form\FormEditBanner'
     _title: 'Edit Banner'
   requirements:
-    _permission: 'access content'
+    _permission: 'create new_banner'
 
 fossee_site_banner.banners:
   path: '/fossee-site-banner/banners'
@@ -20,7 +20,7 @@ fossee_site_banner.banners:
     _controller: '\Drupal\fossee_site_banner\Controller\Banners::banners'
     _title: 'Banners'
   requirements:
-    _permission: 'access content'
+    _permission: 'see available banners'
 
 fossee_site_banner.set-banner-active:
   path: '/fossee-site-banner/set-banner-active/{id}'
@@ -28,7 +28,7 @@ fossee_site_banner.set-banner-active:
     _controller: '\Drupal\fossee_site_banner\Controller\BannerController::setBannerActive'
     _title: 'Hello World'
   requirements:
-    _permission: 'access content'
+    _permission: 'set banner status'
 
 fossee_site_banner.set-banner-inactive:
   path: '/fossee-site-banner/set-banner-inactive/{id}'
@@ -36,7 +36,7 @@ fossee_site_banner.set-banner-inactive:
     _controller: '\Drupal\fossee_site_banner\Controller\BannerController::setBannerInactive'
     _title: 'Hello World'
   requirements:
-    _permission: 'access content'
+    _permission: 'set banner status'
 
 fossee_site_banner.delete-banner:
   path: '/fossee-site-banner/delete-banner/{id}/{random}'
@@ -52,7 +52,23 @@ fossee_site_banner.delete-website:
     _controller: '\Drupal\fossee_site_banner\Controller\BannerController::setBannerInactive'
     _title: 'Hello World'
   requirements:
-    _permission: 'access content'
+    _permission: 'delete website'
+
+fossee_site_banner.edit-banner:
+  path: '/fossee-site-banner/edit-banner/{arg_id}'
+  defaults:
+    _form: '\Drupal\fossee_site_banner\Form\FormEditBanner'
+    _title: 'Edit Banner'
+  requirements:
+    _permission: 'create new_banner'
+
+fossee_site_banner.edit-website:
+  path: '/fossee-site-banner/edit-website/{arg_site_code}'
+  defaults:
+    _form: '\Drupal\fossee_site_banner\Form\FormEditWebsite'
+    _title: 'Edit Website'
+  requirements:
+    _permission: 'delete website'
 
 fossee_site_banner.banner-settings:
   path: '/fossee-site-banner/banner-settings/{arg_banner_id}'
@@ -60,7 +76,7 @@ fossee_site_banner.banner-settings:
     _form: '\Drupal\fossee_site_banner\Form\SiteBannerSettings'
     _title: 'Banner Settings'
   requirements:
-    _permission: 'access content'
+    _permission: 'set allowed sites'
 
 fossee_site_banner.add-website:
   path: '/fossee-site-banner/add-website'
@@ -68,7 +84,7 @@ fossee_site_banner.add-website:
     _form: '\Drupal\fossee_site_banner\Form\FormAddWebsite'
     _title: 'Add Website'
   requirements:
-    _permission: 'access content'
+    _permission: 'add website'
 
 fossee_site_banner.module-settings:
   path: '/admin/settings/fossee_site_banner'
@@ -76,4 +92,4 @@ fossee_site_banner.module-settings:
     _form: '\Drupal\fossee_site_banner\Form\FormModuleSettings'
     _title: 'Fossee Site Banner Settings'
   requirements:
-    _permission: 'access content'
+    _permission: 'administer banners'

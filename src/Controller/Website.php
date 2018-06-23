@@ -8,8 +8,18 @@
 
 namespace Drupal\fossee_site_banner\Controller;
 
+use Drupal\Core\Controller\ControllerBase;
 
-class Website
-{
+class Website extends ControllerBase{
+
+    public function deleteWebsite(){
+
+    }
+
+    public function editWebsite(){
+
+
+
+    }
 
 }

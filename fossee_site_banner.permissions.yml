@@ -1,0 +1,39 @@
+create new_banner:
+  description: 'Allow users to create new banners'
+  title: 'Create new banner'
+  restrict access: TRUE
+
+see available banners:
+  description: 'User can see all available banners'
+  title: 'See Available Banners'
+  restrict access: TRUE
+
+set banner status:
+  description: 'Allows users to set Banner Active/Inactive'
+  title: 'Set Banner Status'
+  restrict access: TRUE
+
+set allowed sites:
+  description: 'Allows user to set the sites in which banner can be displayed'
+  title: 'Set Allowed Sites'
+  restrict access: TRUE
+
+add website:
+  description: 'Allow user to add new websites to the fossee_website_index table'
+  title: 'Add Website'
+  restrict access: TRUE
+
+delete banner:
+  description: 'Allows user to delete banners permanently'
+  title: 'Delete Banner'
+  restrict access: TRUE
+
+delete website:
+  description: 'Allows user to delete websites from the list of available websites'
+  title: 'Delete Website'
+  restrict access: TRUE
+
+administer banners:
+  description: 'Allows users to manage settings like banner file size, extensions etc'
+  title: 'Administer Banners'
+  restrict access: TRUE
